@@ -1,4 +1,3 @@
-
 from PIL import Image, ImageFilter, ImageDraw
 
 def border_glow(image: Image, filter: str) -> Image: 
@@ -24,15 +23,19 @@ def border_glow(image: Image, filter: str) -> Image:
     bimg.paste(cpy, (0, 0), bn)
     return bimg
 
-def _paste(im1, im2):
-    cp = im1.copy()
+def _paste(imb, imf, frompxls = (0, 0)) -> Image:
+    cp = imb.copy()
     cpd = cp.convert("RGBA").getdata()
-    imd = im2.convert("RGBA").resize(cp.size).getdata()
+    imd = imf.convert("RGBA").resize(cp.size).getdata()
     nd = []
-    for c, i in zip(cpd, imd):
-        if (not i[3]) or not (i[0] or i[1] or i[2]):
-            nd.append(c)
-        else: nd.append(i)
+    for i in range(cp.height):
+        for j in range(cp.width):
+            bp = imb.getpixel((j,i))
+            if i<frompxls[1] or j<frompxls[0]: nd.append(bp)
+            else:
+                fp = (0,0,0,0) if i>=imf.height+frompxls[1] or j>=imf.width+frompxls[0] else imf.getpixel((j-frompxls[0],i-frompxls[1])) 
+                if (fp[0]==0 and fp[1]==0 and fp[2]==0) or fp[3]==0: nd.append(bp)
+                else: nd.append(fp)
     cp.putdata(nd)
     return cp.copy()
 
@@ -47,7 +50,6 @@ def paste(background_img: Image, foreground_img: Image, glow_mode = ""):
     if not glow_mode:
         cpy = _paste(cpy, img)
     else:
-        '''
         ci = Image.new("RGBA", background_img.size, (0, 0 ,0 ,0))
         cid = []
         for pi, pc in zip(imgd, datas):
@@ -58,25 +60,19 @@ def paste(background_img: Image, foreground_img: Image, glow_mode = ""):
                     cid.append((0, pc[1], 0, pc[3]))
                 else: cid.append((0, 0, pc[2], pc[3]))
             else: cid.append((0, 0, 0, 0))
-        else: print(pi+pc)
         ci.putdata(cid)
-        ci.show()
-        bci = ci.filter(ImageFilter.GaussianBlur(10))
-        bci.show()
-        cpy = _paste(cpy, bci)
+        sci = img.resize(tuple([round(i*.8) for i in img.size]))
+        itd = _paste(cpy, ci)
+        cpy = _paste(itd, sci, tuple([round(i*.09) for i in img.size]))
     return cpy.copy()
-        '''
-        bi = img.convert("1")
-        b = bi.filter(ImageFilter.GaussianBlur(10))
-        b.show()
-        cpy.paste(img.resize((60, 60)), (7, 7), b)
-        return cpy.copy()
+
 
 b = Image.open('box.png')
 f = Image.open("images\\chess.png")
 
 
-i = paste(b, f, glow_mode="r")
+#i = paste(b, f, glow_mode="")
+i = paste(b, f, glow_mode="g")
 i.show()
 
 
