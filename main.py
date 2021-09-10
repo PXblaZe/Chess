@@ -26,13 +26,13 @@ imgd = Image.open("images/chess.png").resize((boxdim["w"], boxdim["h"]))
 select_mode = True
 def ichange(i, j): 
     global select_mode
-    if select_mode and chance(i, j): pass
-    box: Image = ibox[i][j]
-    cpy = box.convert("RGBA")
-    cpy = paste(cpy, imgd, "g")
-    acsklj = ImageTk.PhotoImage(cpy)
-    idx2bi[i, j][0].config(image=acsklj)
-    idx2bi[i, j][1] = acsklj
+    if select_mode and chance(i, j): 
+        box: Image = ibox[i][j][0]
+        cpy = box.convert("RGBA")
+        cpy = paste(cpy, imgd, "g")
+        acsklj = ImageTk.PhotoImage(cpy)
+        idx2bi[i, j][0].config(image=acsklj)
+        idx2bi[i, j][1] = acsklj
 def on_hover(i, j): 
     phi = paste(ibox[i][j][0], ibox[i][j][1], glow_mode="g")
     ibox[i][j][2] = ImageTk.PhotoImage(phi)
