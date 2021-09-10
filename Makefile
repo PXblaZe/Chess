@@ -1,0 +1,6 @@
+main: main.py
+	@echo Compiling main.py ...
+	@python3 main.py
+utils: utils.py
+	@echo Compiling utils.py ...
+	@python3 utils.py

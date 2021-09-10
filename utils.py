@@ -1,32 +1,9 @@
 from PIL import Image, ImageFilter, ImageDraw
 
-def border_glow(image: Image, filter: str) -> Image: 
-    img = image.convert("RGBA")
-    cpy = img.copy()
-    pxls = img.getdata()
-    npxls = list()
-    for r, g, b, a in pxls: 
-        if filter.lower() == "red":
-            npxls.append((r, 0, 0, round(a+a*.2)))
-        elif filter.lower() == "green":
-            npxls.append((0, g, 0, round(a+a*.2)))
-        elif filter.lower() == "blue":
-            npxls.append((0, 0, b, round(a+a*.2)))
-        else:
-            raise ValueError('filter takes only "red", "green" or "blue" as its values')
-    img.putdata(npxls)
-    bimg = img.filter(ImageFilter.BLUR)
-    new = Image.new("L", cpy.size, 0)
-    di = ImageDraw.Draw(new)
-    di.rectangle((10, 10, cpy.width-10, cpy.height-10), 255)
-    bn = new.filter(ImageFilter.BLUR)
-    bimg.paste(cpy, (0, 0), bn)
-    return bimg
-
 def _paste(imb, imf, frompxls = (0, 0)) -> Image:
+    imb = imb.convert("RGBA")
+    imf = imf.convert("RGBA")
     cp = imb.copy()
-    cpd = cp.convert("RGBA").getdata()
-    imd = imf.convert("RGBA").resize(cp.size).getdata()
     nd = []
     for i in range(cp.height):
         for j in range(cp.width):
@@ -39,41 +16,33 @@ def _paste(imb, imf, frompxls = (0, 0)) -> Image:
     cp.putdata(nd)
     return cp.copy()
 
-def paste(background_img: Image, foreground_img: Image, glow_mode = ""):
+def paste(background_img: Image, foreground_img: Image, glow_mode = "", rescalef = .8):
     if glow_mode.lower() not in ("r", "g", "b", ""): 
         raise ValueError('glow_mode only takes "r", "g", "b" as its values')
     img = foreground_img.convert("RGBA").resize(background_img.size)
-    imgd = img.getdata()
     cpy = background_img.convert("RGBA")
-    datas = cpy.getdata()
-    newData = []
+    sci = img.resize(tuple([round(i*rescalef) for i in img.size]))
     if not glow_mode:
-        cpy = _paste(cpy, img)
+        cpy = _paste(cpy, sci, (round((cpy.width-sci.width)/2), round((cpy.height-sci.height)/2)))
     else:
+        imgd = img.getdata()
+        datas = cpy.getdata()
         ci = Image.new("RGBA", background_img.size, (0, 0 ,0 ,0))
         cid = []
         for pi, pc in zip(imgd, datas):
             if pi[3]:
                 if glow_mode.lower() == 'r': 
-                    cid.append((pc[0], 0, 0, pc[3]))
+                    cid.append((255, 0, 0, 255))
                 elif glow_mode.lower() == 'g': 
-                    cid.append((0, pc[1], 0, pc[3]))
-                else: cid.append((0, 0, pc[2], pc[3]))
+                    cid.append((0, 255, 0, 255))
+                else: cid.append((0, 0, 255, 255))
             else: cid.append((0, 0, 0, 0))
         ci.putdata(cid)
-        sci = img.resize(tuple([round(i*.8) for i in img.size]))
         itd = _paste(cpy, ci)
-        cpy = _paste(itd, sci, tuple([round(i*.09) for i in img.size]))
+        cpy = _paste(itd, sci, (round((itd.width-sci.width)/2), round((itd.height-sci.height)/2)))
     return cpy.copy()
 
+def Cstate(button):
+    print(button.grid_info())
 
-b = Image.open('box.png')
-f = Image.open("images\\chess.png")
-
-
-#i = paste(b, f, glow_mode="")
-i = paste(b, f, glow_mode="g")
-i.show()
-
-
-def chance(x: int, y: int) -> bool: pass
+def chance(x: int, y: int) -> bool: return True
