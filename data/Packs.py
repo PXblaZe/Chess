@@ -1,5 +1,5 @@
 import os, sys
-from PIL import Image, ImageFilter
+from PIL import Image
 from tkinter import Tk
 from utils import Kded, Khed, Kved
 

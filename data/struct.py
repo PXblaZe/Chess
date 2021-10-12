@@ -220,6 +220,12 @@ class Board(Frame):
                             ImageTk.PhotoImage(paste(bi, pack.Bpieces[pc])),
                             ImageTk.PhotoImage(paste(bi, pack.Bpieces[pc]))
                         )
+                        self.view[0][0].grid(row=0, column=0)
+                        self.view[0][0].bind("<Enter>", lambda e, i=0, j=0: on_hover(i,j))
+                        self.view[0][0].bind("<Leave>", lambda e, i=0, j=0: off_hover(i,j))
+                        self.view[0][7].grid(row=0, column=7)
+                        self.view[0][7].bind("<Enter>", lambda e, i=0, j=7: on_hover(i,j))
+                        self.view[0][7].bind("<Leave>", lambda e, i=0, j=7: off_hover(i,j))
                     elif pc == "knight": 
                         bi = pack.iBoard.copy().crop((round(pack.corrB[0]+pack.box_dim[0]), round(pack.corrB[1]), round(pack.corrB[0]+(2*pack.box_dim[0])), round(pack.corrB[1]+pack.box_dim[1])))
                         self.view[0][1] = Box(self, pack.box_dim, ..., 
@@ -233,6 +239,12 @@ class Board(Frame):
                             ImageTk.PhotoImage(paste(bi, pack.Bpieces[pc])),
                             ImageTk.PhotoImage(paste(bi, pack.Bpieces[pc]))
                         )
+                        self.view[0][1].grid(row=0, column=1)
+                        self.view[0][1].bind("<Enter>", lambda e, i=0, j=1: on_hover(i,j))
+                        self.view[0][1].bind("<Leave>", lambda e, i=0, j=1: off_hover(i,j))
+                        self.view[0][6].grid(row=0, column=6)
+                        self.view[0][6].bind("<Enter>", lambda e, i=0, j=6: on_hover(i,j))
+                        self.view[0][6].bind("<Leave>", lambda e, i=0, j=6: off_hover(i,j))
                     elif pc == "bishop":
                         bi = pack.iBoard.copy().crop((round(pack.corrB[0]+(2*pack.box_dim[0])), round(pack.corrB[1]), round(pack.corrB[0]+(3*pack.box_dim[0])), round(pack.corrB[1]+pack.box_dim[1])))
                         self.view[0][2] = Box(self, pack.box_dim, ..., 
@@ -246,6 +258,12 @@ class Board(Frame):
                             ImageTk.PhotoImage(paste(bi, pack.Bpieces[pc])),
                             ImageTk.PhotoImage(paste(bi, pack.Bpieces[pc]))
                         )
+                        self.view[0][2].grid(row=0, column=2)
+                        self.view[0][2].bind("<Enter>", lambda e, i=0, j=2: on_hover(i,j))
+                        self.view[0][2].bind("<Leave>", lambda e, i=0, j=2: off_hover(i,j))
+                        self.view[0][5].grid(row=0, column=5)
+                        self.view[0][5].bind("<Enter>", lambda e, i=0, j=5: on_hover(i,j))
+                        self.view[0][5].bind("<Leave>", lambda e, i=0, j=5: off_hover(i,j))
                     elif pc == "king":
                         bi = pack.iBoard.copy().crop((round(pack.corrB[0]+(4*pack.box_dim[0])), round(pack.corrB[1]), round(pack.corrB[0]+(5*pack.box_dim[0])), round(pack.corrB[1]+pack.box_dim[1])))
                         self.view[0][4] = Box(self, pack.box_dim, ..., 
@@ -253,6 +271,9 @@ class Board(Frame):
                             ImageTk.PhotoImage(paste(bi, pack.Bpieces[pc])),
                             ImageTk.PhotoImage(paste(bi, pack.Bpieces[pc]))
                         )
+                        self.view[0][4].grid(row=0, column=4)
+                        self.view[0][4].bind("<Enter>", lambda e, i=0, j=4: on_hover(i,j))
+                        self.view[0][4].bind("<Leave>", lambda e, i=0, j=4: off_hover(i,j))
                     elif pc == "queen":
                         bi = pack.iBoard.copy().crop((round(pack.corrB[0]+(3*pack.box_dim[0])), round(pack.corrB[1]), round(pack.corrB[0]+(4*pack.box_dim[0])), round(pack.corrB[1]+pack.box_dim[1])))
                         self.view[0][3] = Box(self, pack.box_dim, ..., 
@@ -260,6 +281,9 @@ class Board(Frame):
                             ImageTk.PhotoImage(paste(bi, pack.Bpieces[pc])),
                             ImageTk.PhotoImage(paste(bi, pack.Bpieces[pc]))
                         )
+                        self.view[0][3].grid(row=0, column=3)
+                        self.view[0][3].bind("<Enter>", lambda e, i=0, j=3: on_hover(i,j))
+                        self.view[0][3].bind("<Leave>", lambda e, i=0, j=3: off_hover(i,j))
                 else:
                     for j in range(8):
                         bi = pack.iBoard.copy().crop((round(pack.corrB[0]+(j*pack.box_dim[0])), round(pack.corrB[1]+pack.box_dim[1]), round(pack.corrB[0]+((j+1)*pack.box_dim[0])), round(pack.corrB[1]+(2*pack.box_dim[1]))))
@@ -268,6 +292,9 @@ class Board(Frame):
                             ImageTk.PhotoImage(paste(bi, pack.Bpieces["pawn"])),
                             ImageTk.PhotoImage(paste(bi, pack.Bpieces["pawn"]))
                         )
+                        self.view[1][j].grid(row=1, column=j)
+                        self.view[1][j].bind("<Enter>", lambda e, i=1, j=j: on_hover(i,j))
+                        self.view[1][j].bind("<Leave>", lambda e, i=1, j=j: off_hover(i,j))
                 for pc in pack.Wpieces:
                     if pc == "rook":
                         bi = pack.iBoard.copy().crop((round(pack.corrB[0]), round(pack.corrB[1]+(7*pack.box_dim[1])), round(pack.corrB[0]+pack.box_dim[0]), round(pack.corrB[1]+(8*pack.box_dim[1]))))
@@ -282,6 +309,12 @@ class Board(Frame):
                             ImageTk.PhotoImage(paste(bi, pack.Wpieces[pc])),
                             ImageTk.PhotoImage(paste(bi, pack.Wpieces[pc], glow_mode="g"))
                         )
+                        self.view[7][0].grid(row=7, column=0)
+                        self.view[7][0].bind("<Enter>", lambda e, i=7, j=0: on_hover(i,j))
+                        self.view[7][0].bind("<Leave>", lambda e, i=7, j=0: off_hover(i,j))
+                        self.view[7][7].grid(row=7, column=7)
+                        self.view[7][7].bind("<Enter>", lambda e, i=7, j=7: on_hover(i,j))
+                        self.view[7][7].bind("<Leave>", lambda e, i=7, j=7: off_hover(i,j))
                     elif pc == "knight": 
                         bi = pack.iBoard.copy().crop((round(pack.corrB[0]+pack.box_dim[0]), round(pack.corrB[1]+(7*pack.box_dim[1])), round(pack.corrB[0]+(2*pack.box_dim[0])), round(pack.corrB[1]+(8*pack.box_dim[1]))))
                         self.view[7][1] = Box(self, pack.box_dim, ..., 
@@ -295,6 +328,12 @@ class Board(Frame):
                             ImageTk.PhotoImage(paste(bi, pack.Wpieces[pc])),
                             ImageTk.PhotoImage(paste(bi, pack.Wpieces[pc], glow_mode="g"))
                         )
+                        self.view[7][1].grid(row=7, column=1)
+                        self.view[7][1].bind("<Enter>", lambda e, i=7, j=1: on_hover(i,j))
+                        self.view[7][1].bind("<Leave>", lambda e, i=7, j=1: off_hover(i,j))
+                        self.view[7][6].grid(row=7, column=6)
+                        self.view[7][6].bind("<Enter>", lambda e, i=7, j=6: on_hover(i,j))
+                        self.view[7][6].bind("<Leave>", lambda e, i=7, j=6: off_hover(i,j))
                     elif pc == "bishop":
                         bi = pack.iBoard.copy().crop((round(pack.corrB[0]+(2*pack.box_dim[0])), round(pack.corrB[1]+(7*pack.box_dim[1])), round(pack.corrB[0]+(3*pack.box_dim[0])), round(pack.corrB[1]+(8*pack.box_dim[1]))))
                         self.view[7][2] = Box(self, pack.box_dim, ..., 
@@ -308,6 +347,12 @@ class Board(Frame):
                             ImageTk.PhotoImage(paste(bi, pack.Wpieces[pc])),
                             ImageTk.PhotoImage(paste(bi, pack.Wpieces[pc], glow_mode="g"))
                         )
+                        self.view[7][2].grid(row=7, column=2)
+                        self.view[7][2].bind("<Enter>", lambda e, i=7, j=2: on_hover(i,j))
+                        self.view[7][2].bind("<Leave>", lambda e, i=7, j=2: off_hover(i,j))
+                        self.view[7][5].grid(row=7, column=5)
+                        self.view[7][5].bind("<Enter>", lambda e, i=7, j=5: on_hover(i,j))
+                        self.view[7][5].bind("<Leave>", lambda e, i=7, j=5: off_hover(i,j))
                     elif pc == "king":
                         bi = pack.iBoard.copy().crop((round(pack.corrB[0]+(4*pack.box_dim[0])), round(pack.corrB[1])+(7*pack.box_dim[1]), round(pack.corrB[0]+(5*pack.box_dim[0])), round(pack.corrB[1]+(8*pack.box_dim[1]))))
                         self.view[7][4] = Box(self, pack.box_dim, ..., 
@@ -315,6 +360,9 @@ class Board(Frame):
                             ImageTk.PhotoImage(paste(bi, pack.Wpieces[pc])),
                             ImageTk.PhotoImage(paste(bi, pack.Wpieces[pc], glow_mode="g"))
                         )
+                        self.view[7][4].grid(row=7, column=4)
+                        self.view[7][4].bind("<Enter>", lambda e, i=7, j=4: on_hover(i,j))
+                        self.view[7][4].bind("<Leave>", lambda e, i=7, j=4: off_hover(i,j))
                     elif pc == "queen":
                         bi = pack.iBoard.copy().crop((round(pack.corrB[0]+(3*pack.box_dim[0])), round(pack.corrB[1]+(7*pack.box_dim[1])), round(pack.corrB[0]+(4*pack.box_dim[0])), round(pack.corrB[1]+(8*pack.box_dim[1]))))
                         self.view[7][3] = Box(self, pack.box_dim, ..., 
@@ -322,6 +370,9 @@ class Board(Frame):
                             ImageTk.PhotoImage(paste(bi, pack.Wpieces[pc])),
                             ImageTk.PhotoImage(paste(bi, pack.Wpieces[pc], glow_mode="g"))
                         )
+                        self.view[7][3].grid(row=7, column=3)
+                        self.view[7][3].bind("<Enter>", lambda e, i=7, j=3: on_hover(i,j))
+                        self.view[7][3].bind("<Leave>", lambda e, i=7, j=3: off_hover(i,j))
                 else:
                     for j in range(8):
                         bi = pack.iBoard.copy().crop((round(pack.corrB[0]+(j*pack.box_dim[0])), round(pack.corrB[1]+(6*pack.box_dim[1])), round(pack.corrB[0]+((j+1)*pack.box_dim[0])), round(pack.corrB[1]+(7*pack.box_dim[1]))))
@@ -330,6 +381,9 @@ class Board(Frame):
                             ImageTk.PhotoImage(paste(bi, pack.Wpieces["pawn"])),
                             ImageTk.PhotoImage(paste(bi, pack.Wpieces["pawn"], glow_mode="g"))
                         )
+                        self.view[6][j].grid(row=6, column=j)
+                        self.view[6][j].bind("<Enter>", lambda e, i=6, j=j: on_hover(i,j))
+                        self.view[6][j].bind("<Leave>", lambda e, i=6, j=j: off_hover(i,j))
             else:
                 raise ValueError()
 

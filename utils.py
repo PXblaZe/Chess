@@ -72,7 +72,3 @@ def paste(background_img: Image.Image, foreground_img: Image.Image, glow_mode: s
         cpy = _paste(itd, sci, (round((itd.width-sci.width)/2), round((itd.height-sci.height)/2)))
     return cpy.copy()
 
-#def Cstate(button):
-#    print(button.grid_info())
-
-#def chance(x: int, y: int) -> bool: return True

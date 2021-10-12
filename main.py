@@ -1,8 +1,7 @@
-
-from data import Packs, struct
 from tkinter import Tk
+import elmts.pieces as pieces
+from data import Packs, struct
 from PIL import ImageTk, Image
-from elmts.pieces import *
 
 
 if __name__ == "__main__":
@@ -11,5 +10,4 @@ if __name__ == "__main__":
     tbl = struct.Table(pk)
     brd = struct.Board(pk)
     tbl.initBoard(brd)
-    
     pk.win.mainloop()
