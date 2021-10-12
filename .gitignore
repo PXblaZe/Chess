@@ -1,4 +1,7 @@
-pxldata.txt
 __pycache__/
 box.png
 box1.png
+test.py
+data/__pycache__/
+elmts/__pycache__/
+images/chess.png
