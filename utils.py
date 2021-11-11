@@ -1,36 +1,32 @@
 from PIL import Image
-from typing import Callable
+from typing import Literal, Tuple
 
-
-def Kded(image: Image.Image, xy: tuple, getpixel: Callable = ..., sharp = 50):
-    if isinstance(image, Image.Image) and isinstance(xy, tuple) and (isinstance(getpixel, Callable) or getpixel==...): pass
+def Kded(image: Image.Image, xy: Tuple[int, int], sharp: int = 50) -> bool:
+    if isinstance(image, Image.Image) and isinstance(xy, tuple): pass
     else: raise ValueError("Invalid Argument(s).")
-    if getpixel==...: getpixel = image.getpixel 
     sum = abs(((-2*image.getpixel((xy[0]-1, xy[1]-1)))) + (2*image.getpixel((xy[0]+1, xy[1]+1))))
     if sum<sharp: return False
     else: return True
 
-def Kved(image: Image.Image, xy: tuple, getpixel: Callable = ..., sharp = 50):
-    if isinstance(image, Image.Image) and isinstance(xy, tuple) and (isinstance(getpixel, Callable) or getpixel==...): pass
+def Kved(image: Image.Image, xy: Tuple[int, int],  sharp: int = 50) -> bool:
+    if isinstance(image, Image.Image) and isinstance(xy, tuple): pass
     else: raise ValueError("Invalid Argument(s).")
-    if getpixel==...: getpixel = image.getpixel 
     suml = (-1*image.getpixel((xy[0]-1, xy[1]-1))) + (-2*image.getpixel((xy[0]-1, xy[1]))) + (-1*image.getpixel((xy[0]-1, xy[1]+1)))
     sumr = image.getpixel((xy[0]+1, xy[1]-1)) + 2*image.getpixel((xy[0]+1, xy[1])) + image.getpixel((xy[0]+1, xy[1]+1))
     sum = suml + sumr
     if sum < sharp: return False
     else: return True
 
-def Khed(image: Image.Image, xy: tuple, getpixel: Callable = ... ,sharp = 50):
-    if isinstance(image, Image.Image) and isinstance(xy, tuple) and (isinstance(getpixel, Callable) or getpixel==...): pass
+def Khed(image: Image.Image, xy: Tuple[int, int], sharp: int = 50) -> bool:
+    if isinstance(image, Image.Image) and isinstance(xy, tuple): pass
     else: raise ValueError("Invalid Argument(s).")
-    if getpixel==...: getpixel = image.getpixel
     sumu = (-1*image.getpixel((xy[0]-1, xy[1]-1))) + (-2*image.getpixel((xy[0], xy[1]-1))) + (-1*image.getpixel((xy[0]+1, xy[1]-1)))
     sumb = image.getpixel((xy[0]-1, xy[1]+1)) + 2*image.getpixel((xy[0], xy[1]+1)) + image.getpixel((xy[0]+1, xy[1]+1))
     sum = sumu + sumb
     if sum < sharp: return False
     else: return True
 
-def _paste(imb, imf, frompxls = (0, 0)) -> Image:
+def _paste(imb: Image.Image, imf: Image.Image, frompxls: Tuple[int, int] = (0, 0)) -> Image.Image:
     imb = imb.convert("RGBA")
     imf = imf.convert("RGBA")
     cp = imb.copy()
@@ -46,7 +42,7 @@ def _paste(imb, imf, frompxls = (0, 0)) -> Image:
     cp.putdata(nd)
     return cp.copy()
 
-def paste(background_img: Image.Image, foreground_img: Image.Image, glow_mode: str = "", rescalef: float = .8):
+def paste(background_img: Image.Image, foreground_img: Image.Image, glow_mode: Literal['r', 'b', 'g',''] = "", rescalef: float = .8):
     if glow_mode.lower() not in ("r", "g", "b", ""): 
         raise ValueError('glow_mode only takes "r", "g", "b" as its values')
     img = foreground_img.convert("RGBA").resize(background_img.size)
@@ -69,6 +65,7 @@ def paste(background_img: Image.Image, foreground_img: Image.Image, glow_mode: s
             else: cid.append((0, 0, 0, 0))
         ci.putdata(cid)
         itd = _paste(cpy, ci)
-        cpy = _paste(itd, sci, (round((itd.width-sci.width)/2), round((itd.height-sci.height)/2)))
+        cpy = _paste(itd, sci, frompxls=(round((itd.width-sci.width)/2), round((itd.height-sci.height)/2)))
     return cpy.copy()
+
 

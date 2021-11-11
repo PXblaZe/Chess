@@ -1,41 +1,79 @@
 
 
-from elmts.plyrs import Player
-from PIL import ImageTk, Image
+#from elmts.plyrs import Player
+from typing import Final, Tuple
+from PIL import Image
 
-Bside = "black"
-Wside = "white"
+Bside: Final[str] = "black"
+Wside: Final[str] = "white"
+Shared: Final[str] = "void"
 
 class piece:
-
-    def __init__(lun, pos: tuple) -> None:
-        lun.pos = pos
-
-
-    @property 
-    def currpos(fuck): return fuck.pos
+    def __init__(self, texture: Image.Image, pos: Tuple[int, int], side) -> None:
+        self.side = side
+        self.weight = None
+        self.texture = texture
+        self.pos = pos
 
 
+class Void(piece):
+
+    def __init__(self, texture: Image.Image, pos: Tuple[int, int], side) -> None:
+        piece.__init__(self, texture, pos, side)
+
+class Pawn(piece):
+
+    def __init__(self, texture: Image.Image, pos: Tuple[int, int], side) -> None:
+        piece.__init__(self, texture, pos, side)
+        self.weight = 1/6
+
+
+    def nextMoves(self, board) -> Tuple[int, int]:
+        np = ()
+        if self.currpos[0]:
+            if board.view[self.currpos[0]-1][self.currpos[1]].name == "":
+                np+=(self.currpos[0]-1, self.currpos[1]),
+                if (self.currpos[0] == 6) and (board.view[self.currpos[0]-2][self.currpos[1]].name == ""):
+                    np+=(self.currpos[0]-2, self.currpos[1]),
+            if board.view[self.currpos[0]-1][self.currpos[1]+1].name != "":
+                if board.view[self.currpos[0]-1][self.currpos[1]+1].name[1] != self.side[0]: np+=(self.currpos[0]-1, self.currpos[1]+1),
+            if board.view[self.currpos[0]-1][self.currpos[1]-1].name != "":
+                if board.view[self.currpos[0]-1][self.currpos[1]-1].name[1] != self.side[0]: np+=(self.currpos[0]-1, self.currpos[1]-1),
+        else: np = None,
+        return np
+                
 
 
 
+class Rook(piece):
 
-class Pawn(piece): 
+    def __init__(self, texture: Image.Image, pos: tuple, side) -> None:
+        piece.__init__(self, texture, pos, side)
+        self.weight = 1/3
 
-    def __init__(pos: tuple, side) -> None:
 
-        super().__init__(pos)
+class Knight(piece):
 
-    def nextMoves(self, board):
+    def __init__(self, texture: Image.Image, pos: tuple, side) -> None:
+        piece.__init__(self, texture, pos, side)
+        self.weight = 2/3
 
-        if self.currpos[0] == 1 :pass
+class Bishop(piece):
 
-class Rook(piece): pass
+    def __init__(self, texture: Image.Image, pos: tuple, side) -> None:
+        piece.__init__(self, texture, pos, side)
+        self.weight = .5
 
-class Knight(piece): pass
+class Queen(piece):
 
-class Bishop(piece): pass
+    def __init__(self, texture: Image.Image, pos: tuple, side) -> None:
+        piece.__init__(self, texture, pos, side)
+        self.weight = 5/6
 
-class Queen(piece): pass
+class King(piece):
 
-class King(piece): pass
+    def __init__(self, texture: Image.Image, pos: tuple, side) -> None:
+        piece.__init__(self, texture, pos, side)
+        self.weight = 1
+
+
