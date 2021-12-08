@@ -51,6 +51,7 @@ class load:
             "king": Image.open(dirI+f"s{self.set}kingW.png").resize(tuple(round(i) for i in self.box_dim))
         }
 
+        
 class show:
 
     def __init__(self, win) -> None: pass

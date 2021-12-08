@@ -5,3 +5,5 @@ data/__pycache__/
 elmts/__pycache__/
 images/chess.png
 .mypy_cache/
+.vscode/
+README.md

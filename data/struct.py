@@ -13,7 +13,7 @@ class Box(Button):
         self.piece = piece
         self.look = ImageTk.PhotoImage(paste(self.bgi, self.piece.texture)) if piece.side!=pieces.Shared else ImageTk.PhotoImage(self.bgi)
         self.hover = ImageTk.PhotoImage(paste(self.bgi, self.piece.texture, glow_mode="g")) if piece.side==win.player_side else ImageTk.PhotoImage(paste(self.bgi, self.piece.texture))
-        Button.__init__(self, win, image=self.look, borderwidth=0, command=self.piece)
+        Button.__init__(self, win, image=self.look, borderwidth=0, command=lambda box=self, brd=win: self.piece(brd,box))
         self.grid(row=pos[0], column=pos[1])
         self.bind("<Enter>", lambda e: self.config(image=self.look if self.piece.side==pieces.Shared else self.hover))
         self.bind("<Leave>", lambda e: self.config(image=self.look))
@@ -23,7 +23,7 @@ class Board(Frame):
     def __init__(self, pack: Packs.load, player_side = pieces.Bside): 
         Frame.__init__(self, pack.win, width=pack.box_dim[0]*8, height=pack.box_dim[1]*8)    
         self.pack(anchor="nw")    
-        self.player_side =player_side
+        self.player_side = player_side
         self.view = tuple([[None for _ in range(8)] for __ in range(8)])
         for _ in range(2):
             if self.player_side == pieces.Bside:
@@ -149,7 +149,7 @@ class Table(Canvas):
         self.pzcod = ((im1.width*.2) + pack.corrB[0], (im1.height*.05) + pack.corrB[1])
         im1.paste(im2, (round(im1.width*.2), round(im1.height*.05)))
         self.look = ImageTk.PhotoImage(im1)
-        self.create_image(0, 0, anchor="nw", image=self.look, )
+        self.create_image(0, 0, anchor="nw", image=self.look)
 
     def initBoard(self, board: Board):
         self.create_window(self.pzcod[0], self.pzcod[1], anchor="nw", window=board)
